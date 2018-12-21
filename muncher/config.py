@@ -95,15 +95,20 @@ class Config(object):
             self.id_selectors.append("$")
             self.custom_selectors.append("getElement")
 
-    def processArgs(self):
+    def processArgs(*self):
+
+		#Receives a list with the configurations, of which, the first in position [0] represents the start configurations
+		#The second in question are the qualifying arguments
+
         """processes arguments passed in via command line and sets config settings accordingly
 
         Returns:
         void
 
         """
+
         try:
-            opts, args = getopt.getopt(sys.argv[1:], "", ["css=", "views=", "html=", "js=", "help", "view-ext=", "ignore=", "framework=", "selectors=", "class-selectors=", "id-selectors=", "compress-html", "show-savings", "verbose", "js-manifest=", "rewrite-constants"])
+            opts = self[1]
         except:
             Muncher.showUsage()
 
@@ -113,34 +118,34 @@ class Config(object):
             if key == "--help":
                 Muncher.showUsage()
             elif key == "--css":
-                self.setCssFiles(value)
+                self[0].setCssFiles(value)
             elif key == "--views" or key == "--html":
                 views_set = True
-                self.setViewFiles(value)
+                self[0].setViewFiles(value)
             elif key == "--js":
-                self.setJsFiles(value)
+                self[0].setJsFiles(value)
             elif key == "--ignore":
-                self.setIgnore(value)
+                self[0].setIgnore(value)
             elif key == "--view-ext":
-                self.view_extension = value
+                self[0].view_extension = value
             elif key == "--framework":
-                self.setFramework(value)
+                self[0].setFramework(value)
             elif key == "--selectors":
-                self.setCustomSelectors(value)
+                self[0].setCustomSelectors(value)
             elif key == "--class-selectors":
-                self.addClassSelectors(value)
+                self[0].addClassSelectors(value)
             elif key == "--id-selectors":
-                self.addIdSelectors(value)
+                self[0].addIdSelectors(value)
             elif key == "--compress-html":
-                self.compress_html = True
+                self[0].compress_html = True
             elif key == "--show-savings":
-                self.show_savings = True
+                self[0].show_savings = True
             elif key == "--verbose":
-                self.verbose = True
+                self[0].verbose = True
             elif key == "--js-manifest":
-                self.js_manifest = value
+                self[0].js_manifest = value
             elif key == "--rewrite-constants":
-                self.rewrite_constants = True
+                self[0].rewrite_constants = True
 
         # you have to at least have a view
         if views_set is False:
