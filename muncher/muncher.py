@@ -269,8 +269,8 @@ class Muncher(object):
             for block in blocks:
                 contents = contents + block
 
-        ids_found = re.findall(r'((?<!\:\s)(?<!\:)#\w+)(\.|\{|,|\s|#)', contents, re.DOTALL)
-        classes_found = re.findall(r'(?!\.[0-9])\.\w+', contents)
+        ids_found = re.findall(r'((?<!\:\s)(?<!\:)#[\w-]+)(\.|\{|,|\s|#)', contents, re.DOTALL)
+        classes_found = re.findall(r'(?!\.[0-9])\.[\w-]+', contents)
         self.addIds(ids_found)
         self.addClasses(classes_found)
 
