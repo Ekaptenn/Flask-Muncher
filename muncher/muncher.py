@@ -333,8 +333,8 @@ class Muncher(object):
 
     def processJsManifest(self):
         contents = Util.fileGetContents(self.config.js_manifest)
-        ids = re.findall(r'\s+?(var\s)?\${1}([A-Z0-9_]+)\s?=\s?[\'|\"](.*?)[\'|\"][,|;]', contents)
-        classes = re.findall(r'\s+?(var\s)?\${2}([A-Z0-9_]+)\s?=\s?[\'|\"](.*?)[\'|\"][,|;]', contents)
+        ids = re.findall(r'\s+?(var\s)?\${1}([A-Z0-9_]+)\s?:\s?[\'|\"](.*?)[\'|\"][,|;]', contents)
+        classes = re.findall(r'\s+?(var\s)?\${2}([A-Z0-9_]+)\s?:\s?[\'|\"](.*?)[\'|\"][,|;]', contents)
 
         self.manifest_ids = {}
         self.manifest_classes = {}
@@ -351,15 +351,17 @@ class Muncher(object):
         contents = Util.fileGetContents(self.config.js_manifest)
 
         for key, value in self.manifest_ids.items():
+            #print key,'yyyyyyyyy'
+            #print value,'tttttt'
             if "#" + value in self.id_map:
-                contents = re.sub(r'((?<!\$)\${1}[A-Z0-9_]+\s?=\s?[\'|\"])(' + value + ')([\'|\"][,|;])', r'\1' + self.id_map["#" + value].replace("#", "") + r'\3', contents)
+                contents = re.sub(r'((?<!\$)\${1}[A-Z0-9_]+\s?:\s?[\'|\"])(' + value + ')([\'|\"][,|;])', r'\1' + self.id_map["#" + value].replace("#", "") + r'\3', contents)
 
         for key, value in self.manifest_classes.items():
             if "." + value in self.class_map:
-                contents = re.sub(r'(\${2}[A-Z0-9_]+\s?=\s?[\'|\"])(' + value + ')([\'|\"][,|;])', r'\1' + self.class_map["." + value].replace(".", "") + r'\3', contents)
+                contents = re.sub(r'(\${2}[A-Z0-9_]+\s?:\s?[\'|\"])(' + value + ')([\'|\"][,|;])', r'\1' + self.class_map["." + value].replace(".", "") + r'\3', contents)
 
         if self.config.rewrite_constants:
-            constants = re.findall(r'(\s+?(var\s)?([A-Z0-9_]+)\s?=\s?[\'|\"](.*?)[\'|\"][,|;])', contents)
+            constants = re.findall(r'(\s+?(var\s)?([A-Z0-9_]+)\s?:\s?[\'|\"](.*?)[\'|\"][,|;])', contents)
             new_constants = {}
             i = 0
             for constant in constants:
@@ -368,7 +370,7 @@ class Muncher(object):
                     continue
 
                 i += 1
-                new_constant = re.sub(r'=(.*)([,|;])','= ' + str(i) + r'\2', constant[0])
+                new_constant = re.sub(r'=(.*)([,|;])',': ' + str(i) + r'\2', constant[0])
                 contents = contents.replace(constant[0], new_constant)
 
         new_manifest = Util.prependExtension("opt", self.config.js_manifest)

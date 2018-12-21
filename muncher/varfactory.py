@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import math
+from array import array
 
 class VarFactory:
     """class to keep multiple counters and turn numeric counters into alphabetical ones"""
@@ -64,26 +65,8 @@ class VarFactory:
         string
 
         """
-        # total number of combinations for this index size
-        combinations = 0
-        letters = 0
-        while (combinations + (((letters - 1) * 26) - 1) < index):
-            letters += 1
-            combinations = int(math.pow(len(VarFactory.letters), letters))
+        #print index,'$'
+        symbols = array('c', ["a", "b", "c", "d", "e", "f", "g", "h",
+        "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
 
-        if (index > 701):
-            raise Exception("until my math skillz get better we can only support 702 possibilities!")
-
-        a = int(index) + 1
-
-        if a < 27:
-            return chr(a + 96)
-
-        b = 0
-        while a > 26:
-            b += 1
-            a = a - 26
-
-        b = chr(b + 96)
-        a = chr(a + 96)
-        return b + a
+        return symbols[index / (len(symbols) * len(symbols))] + symbols[(index / len(symbols)) % len(symbols)]+symbols[index % len(symbols)]
