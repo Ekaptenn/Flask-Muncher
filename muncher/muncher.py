@@ -323,7 +323,7 @@ class Muncher(object):
                 continue
 
             if selector[0] in self.config.custom_selectors:
-                matches = re.findall(r'((#|\.)[a-zA-Z0-9_]*)', selector[2])
+                matches = re.findall(r'((#|\.)[a-zA-Z0-9_\-]*)', selector[2])
                 for match in matches:
                     if match[1] == "#":
                         self.addId(match[0])
